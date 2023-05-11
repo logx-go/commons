@@ -2,14 +2,12 @@ package commons
 
 import (
 	"runtime"
-
-	"github.com/logx-go/contract/pkg/logx"
 )
 
 // SetCallerInfo add the caller info to the fields map
-func SetCallerInfo(skip int, override bool, fields map[string]any) map[string]any {
+func SetCallerInfo(skip int, override bool, fields map[string]any, fieldNameCallerFunc, fieldNameCallerFile, fieldNameCallerLine string) map[string]any {
 	for fieldName := range fields {
-		if fieldName == logx.FieldNameCallerFunc || fieldName == logx.FieldNameCallerFile || fieldName == logx.FieldNameCallerLine {
+		if fieldName == fieldNameCallerFunc || fieldName == fieldNameCallerFile || fieldName == fieldNameCallerLine {
 			if !override {
 				return fields
 			}
@@ -25,9 +23,9 @@ func SetCallerInfo(skip int, override bool, fields map[string]any) map[string]an
 
 	funcName := runtime.FuncForPC(pc).Name()
 
-	fields[logx.FieldNameCallerFunc] = funcName
-	fields[logx.FieldNameCallerFile] = file
-	fields[logx.FieldNameCallerLine] = line
+	fields[fieldNameCallerFunc] = funcName
+	fields[fieldNameCallerFile] = file
+	fields[fieldNameCallerLine] = line
 
 	return fields
 }
