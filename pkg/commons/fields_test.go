@@ -7,6 +7,53 @@ import (
 	"time"
 )
 
+func TestFilterFieldsByName(t *testing.T) {
+	testCases := []struct {
+		Name           string
+		Fields         map[string]interface{}
+		Filter         []string
+		ExpectedResult map[string]interface{}
+	}{
+		{
+			Name: "FilterFieldsByName with fields",
+			Fields: map[string]interface{}{
+				"name":     "John",
+				"age":      30,
+				"location": "New York",
+				"email":    "john@example.com",
+			},
+			Filter: []string{"age", "email"},
+			ExpectedResult: map[string]interface{}{
+				"name":     "John",
+				"location": "New York",
+			},
+		},
+		{
+			Name:           "FilterFieldsByName with nil fields",
+			Fields:         nil,
+			Filter:         []string{"age", "email"},
+			ExpectedResult: map[string]interface{}{},
+		},
+		{
+			Name:           "FilterFieldsByName with empty fields",
+			Fields:         map[string]interface{}{},
+			Filter:         []string{"age", "email"},
+			ExpectedResult: map[string]interface{}{},
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc // Capture range variable
+		t.Run(tc.Name, func(t *testing.T) {
+			filteredFields := FilterFieldsByName(tc.Fields, tc.Filter...)
+
+			if !reflect.DeepEqual(filteredFields, tc.ExpectedResult) {
+				t.Errorf("FilterFieldsByName() = %v, want %v", filteredFields, tc.ExpectedResult)
+			}
+		})
+	}
+}
+
 func TestGetAsResponsePtrOrElse(t *testing.T) {
 	resp := &http.Response{StatusCode: 200}
 	testCases := []struct {
