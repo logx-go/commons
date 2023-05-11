@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+func CloneFieldMap(fields map[string]any) map[string]any {
+	return FilterFieldsByName(fields)
+}
+
 func FilterFieldsByName(fields map[string]any, field ...string) map[string]any {
 	if fields == nil {
 		return make(map[string]any)
