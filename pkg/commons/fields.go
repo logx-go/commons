@@ -6,6 +6,24 @@ import (
 	"time"
 )
 
+func FilterFieldsByName(fields map[string]any, field ...string) map[string]any {
+	if fields == nil {
+		return make(map[string]any)
+	}
+
+	filteredFields := make(map[string]any)
+
+	for name, value := range fields {
+		if Contains(field, name) {
+			continue
+		}
+
+		filteredFields[name] = value
+	}
+
+	return filteredFields
+}
+
 func Contains(slice []string, target string) bool {
 	for _, str := range slice {
 		if str == target {
