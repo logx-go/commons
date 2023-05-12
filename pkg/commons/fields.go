@@ -3,8 +3,23 @@ package commons
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
+
+func FilterFieldsWithValues(originalMap map[string]any) map[string]any {
+	filteredMap := make(map[string]any)
+
+	for k, v := range originalMap {
+		if v == nil || IsEmptyValue(reflect.ValueOf(v)) {
+			continue
+		}
+
+		filteredMap[k] = v
+	}
+
+	return filteredMap
+}
 
 func CloneFieldMap(fields map[string]any) map[string]any {
 	return FilterFieldsByName(fields)
