@@ -7,6 +7,29 @@ import (
 	"time"
 )
 
+func TestFilterEmptyValues(t *testing.T) {
+	originalMap := map[string]any{
+		"key1": "value1",
+		"key2": nil,
+		"key3": "",
+		"key4": 0,
+		"key5": []string{},
+		"key6": map[string]any{},
+		"key7": true,
+	}
+
+	filteredMap := FilterFieldsWithValues(originalMap)
+
+	expectedMap := map[string]any{
+		"key1": "value1",
+		"key7": true,
+	}
+
+	if !reflect.DeepEqual(filteredMap, expectedMap) {
+		t.Errorf("Filtered map does not match expected result. Got: %v, Want: %v", filteredMap, expectedMap)
+	}
+}
+
 func TestFilterFieldsByName(t *testing.T) {
 	testCases := []struct {
 		Name           string
